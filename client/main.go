@@ -9,18 +9,18 @@ import (
 func main() {
 	log.SetFlags(log.Lshortfile)
 
-	os.Setenv("SSL_CERT_FILE", "/Users/nam/work/go/tls/server/server.crt")
+	os.Setenv("SSL_CERT_FILE", "server.crt")
 
-	conf := &tls.Config{
-		//InsecureSkipVerify: true,
-	}
+	conf := &tls.Config{}
 
-	conn, err := tls.Dial("tcp", "127.0.0.1:443", conf)
+	conn, err := tls.Dial("tcp", "localhost:443", conf)
+
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	defer conn.Close()
+	println("tls conn opened")
 
 	n, err := conn.Write([]byte("hello\n"))
 	if err != nil {
@@ -35,5 +35,6 @@ func main() {
 		return
 	}
 
+	println("here is what we got")
 	println(string(buf[:n]))
 }
